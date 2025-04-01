@@ -4,10 +4,8 @@ import pool from '../config/db'
 
 export const getWidgets = async (req: Request, res: Response) => {
   try {
-    console.log('sdfsdaaa');
     
     const result = await pool.query("SELECT * FROM widgets ORDER BY id ASC");
-    console.log(result,'sdgfsg');
     
     res.json(result.rows);
   } catch (error) {

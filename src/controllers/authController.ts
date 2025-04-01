@@ -1,7 +1,6 @@
 import {Request , Response} from 'express'
 import pool from '../config/db'
 import jwt from 'jsonwebtoken'
-import { log } from 'console';
 const SECRET_KEY = "jwt-secret-key";
 
 
@@ -9,12 +8,8 @@ export const authLogin = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     try {
-        console.log('Email:', email);
-        console.log('Password:', password);
         
         const userResult = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
-
-        console.log('User Data:', userResult);
         
         if (userResult.rows.length === 0) {
             res.status(400).json({ error: "Invalid email or password" });
@@ -50,8 +45,6 @@ export const authSignup = async (req: Request, res: Response) => {
             "INSERT INTO users (name, email, password, widget_preference) VALUES ($1, $2, $3, $4) RETURNING *",
             [name, email, password, JSON.stringify([])]
         );
-
-        console.log('sdfs',result);
         
 
         res.status(201).json({ message: "User registered", user: result.rows[0] });
